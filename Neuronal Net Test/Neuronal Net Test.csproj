@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,6 +55,11 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Partition.cs" />
+    <Compile Include="NeuralNet\NeuralNetwork.cs" />
+    <Compile Include="NeuralNet\Neurons\Neuron.cs" />
+    <Compile Include="NeuralNet\Neurons\Connection.cs" />
+    <Compile Include="NeuralNet\Neurons\InputNeuron.cs" />
+    <Compile Include="NeuralNet\Neurons\WorkingNeuron.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

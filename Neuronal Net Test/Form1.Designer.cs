@@ -31,24 +31,25 @@ namespace Neuronal_Net_Test
         private void InitializeComponent()
         {
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.panel1 = new Panel();
-            this.panel2 = new Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.BorderStyle = BorderStyle.Fixed3D;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(412, 475);
             this.panel1.TabIndex = 0;
-            this.panel1.MouseDown += new MouseEventHandler(this.panel1_MouseDown);
-            this.panel1.MouseUp += new MouseEventHandler(this.panel1_MouseUp);
-            this.panel1.MouseMove += new MouseEventHandler(this.panel1_MouseMove);
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
+            this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
             // 
             // panel2
             // 
-            this.panel2.BorderStyle = BorderStyle.Fixed3D;
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel2.Location = new System.Drawing.Point(430, 12);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(424, 475);
@@ -57,7 +58,7 @@ namespace Neuronal_Net_Test
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1189, 499);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Neuronal_Net_Test.Models;
+using Neuronal_Net_Test.NeuralNet;
+using Neuronal_Net_Test.NeuralNet.Neurons;
+using System;
 
 namespace Neuronal_Net_Test
 {
@@ -14,13 +16,28 @@ namespace Neuronal_Net_Test
         private Graphics _gp2;
         private List<Partition> _partitions = new List<Partition>();
         private int _mostMatch = 0;
+        private NeuralNetwork net = new NeuralNetwork();
 
         public Form1()
         {
             InitializeComponent();
             _gp1 = panel1.CreateGraphics();
             _gp2 = panel2.CreateGraphics();
-            SetPartitions(10, 12);
+            SetPartitions(20, 24);
+            for (int i = 0; i < 20*24; i++)
+            {
+                net.AddInputNeuron(new InputNeuron());
+            }
+            var rand = new Random();
+            for (int i = 0; i < 20 * 24; i++)
+            {
+                net.AddHiddenNeuron(new WorkingNeuron());
+            }
+            for (int i = 0; i < 52; i++)
+            {
+                net.AddOutputNeuron(new WorkingNeuron());
+            }
+            net.GenerateFullMesh();
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -33,6 +50,12 @@ namespace Neuronal_Net_Test
             _points.Add(_lastPoint);
             _lastPoint = null;
             simplify_Panel1();
+            var data = new List<float>();
+            foreach (var part in _partitions)
+            {
+                data.Add((float)part.IncludesPoint / (float)_mostMatch);
+            }
+            net.CalculateValue(data);
         }
 
         private void panel1_MouseMove(object sender, MouseEventArgs e)
@@ -94,8 +117,16 @@ namespace Neuronal_Net_Test
         {
             foreach (var partition in _partitions)
             {
-                _gp2.FillRectangle(new HatchBrush(HatchStyle.BackwardDiagonal , Color.FromArgb(partition.IncludesPoint/_mostMatch * 255, 0, 0, 0),Color.White), partition.Part);
+                if(partition.IncludesPoint > 0)
+                {
+                    _gp2.FillRectangle( new SolidBrush(Color.FromArgb(Convert.ToInt32(((float)partition.IncludesPoint / (float)_mostMatch * 255)),0,0,0)), partition.Part);
+                }
             }
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
