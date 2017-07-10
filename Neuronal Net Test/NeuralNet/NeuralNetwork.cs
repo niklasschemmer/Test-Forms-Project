@@ -10,6 +10,31 @@ namespace Neuronal_Net_Test.NeuralNet
         private List<WorkingNeuron> hiddenNeurons = new List<WorkingNeuron>();
         private List<WorkingNeuron> outputNeurons = new List<WorkingNeuron>();
 
+        public int GetMaxValue()
+        {
+            var max = new WorkingNeuron();
+            for (var i = 0; i < outputNeurons.Count; i++)
+            {
+                if (max == null || outputNeurons[i].GetValue() > max.GetValue())
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }
+
+        public void TrainNeuralNet(float[] input, int result)
+        {
+            foreach (var hidden in hiddenNeurons)
+            {
+                hidden.Train(input, result);
+            }
+            foreach(var output in outputNeurons)
+            {
+                output.Train(input, result);
+            }
+        }
+
         public void CalculateValue(List<float> data)
         {
             if (data.Count == inputNeurons.Count)
@@ -61,7 +86,7 @@ namespace Neuronal_Net_Test.NeuralNet
             {
                 foreach (var input in inputNeurons)
                 {
-                    wn.AddNeuronConnection(input, 1);
+                    wn.AddNeuronConnection(input, rand.Next(-10,10));
                 }
             }
 

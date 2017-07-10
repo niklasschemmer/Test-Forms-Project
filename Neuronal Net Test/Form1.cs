@@ -5,6 +5,7 @@ using Neuronal_Net_Test.Models;
 using Neuronal_Net_Test.NeuralNet;
 using Neuronal_Net_Test.NeuralNet.Neurons;
 using System;
+using System.Text;
 
 namespace Neuronal_Net_Test
 {
@@ -14,9 +15,13 @@ namespace Neuronal_Net_Test
         private List<Point?> _points = new List<Point?>();
         private Graphics _gp1;
         private Graphics _gp2;
-        private List<Partition> _partitions = new List<Partition>();
+        private List<Partition> _partitions;
         private int _mostMatch = 0;
         private NeuralNetwork net = new NeuralNetwork();
+        private List<char> values = new List<char>
+        {
+            'a', 'b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','x','y','z'
+        };
 
         public Form1()
         {
@@ -56,6 +61,8 @@ namespace Neuronal_Net_Test
                 data.Add((float)part.IncludesPoint / (float)_mostMatch);
             }
             net.CalculateValue(data);
+            var max = net.GetMaxValue();
+            label2.Text = values[max].ToString();
         }
 
         private void panel1_MouseMove(object sender, MouseEventArgs e)
@@ -80,6 +87,8 @@ namespace Neuronal_Net_Test
 
         private void SetPartitions(int xPartitions, int yPartitions)
         {
+            _partitions = new List<Partition>();
+            _points = new List<Point?>();
             var xL = panel1.Width / xPartitions;
             var yL = panel1.Height / yPartitions;
             for (var dY = 0; dY < yPartitions; dY++)
@@ -117,16 +126,38 @@ namespace Neuronal_Net_Test
         {
             foreach (var partition in _partitions)
             {
-                if(partition.IncludesPoint > 0)
-                {
-                    _gp2.FillRectangle( new SolidBrush(Color.FromArgb(Convert.ToInt32(((float)partition.IncludesPoint / (float)_mostMatch * 255)),0,0,0)), partition.Part);
-                }
+                _gp2.FillRectangle( new SolidBrush(Color.FromArgb(Convert.ToInt32(((float)partition.IncludesPoint / (float)_mostMatch * 255)),0,0,0)), partition.Part);
             }
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        private void RePantRectangles()
         {
+            foreach (var partition in _partitions)
+            {
+                _gp2.FillRectangle(new SolidBrush(Color.White), partition.Part);
+            }
+        }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var input = textBox1.Text;
+            var code = Encoding.ASCII.GetBytes(input)[0];
+            if (code > 96)
+            {
+                code -= 96;
+            }
+            else
+            {
+                code -= 38;
+            }
+            var data = new float[20 * 24];
+            for (var i = 0;i < _partitions.Count; i++)
+            {
+                data[i] = ((float)_partitions[i].IncludesPoint / (float)_mostMatch);
+            }
+            net.TrainNeuralNet(data, code);
+            SetPartitions(20, 24);
+            RePantRectangles();
         }
     }
 }

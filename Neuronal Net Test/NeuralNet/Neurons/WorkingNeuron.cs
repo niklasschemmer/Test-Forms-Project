@@ -15,16 +15,17 @@ namespace Neuronal_Net_Test.NeuralNet.Neurons
         {
             connections.Add(connection);
         }
-        public void Train(double[] input, int result)
+        public void Train(float[] input, int result)
         {
-            var alpha = 0.01;
-            if (this.value - result < 0.1)
+            float alpha = 0.01F;
+            Invalidate();
+            Calculate();
+            if (this.value - result >= 0.1)
             {
-                return;
-            }
-            for (int i = 0; i < connections.Count; i++)
-            {
-                connections[i].weight = connections[i].weight * input[i] * (result - (float)this.value);
+                for (int i = 0; i < connections.Count; i++)
+                {
+                    connections[i].weight = connections[i].weight * alpha * input[i] * (result - this.value??0);
+                }
             }
         }
         public void Invalidate()
